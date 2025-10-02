@@ -13,6 +13,7 @@ const verifyToken = process.env.VERIFY_TOKEN;
 const apiToken = process.env.API_TOKEN;
 const apiVersion = process.env.API_VERSION;
 const businessPhone = process.env.BUSINESS_PHONE;
+const phoneNumberId = process.env.PHONE_NUMBER_ID;
 
 
 // Route for GET requests
@@ -69,7 +70,7 @@ app.post('/', async (req, res) => {
 
 // Function to send message via WhatsApp API
 async function sendMessage(to, message) {
-  const url = `https://graph.facebook.com/${apiVersion}/${businessPhone}/messages`;
+  const url = `https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`;
   
   const payload = {
     messaging_product: "whatsapp",
@@ -79,6 +80,9 @@ async function sendMessage(to, message) {
       body: message
     }
   };
+
+  console.log('Sending message to URL:', url);
+  console.log('Payload:', JSON.stringify(payload, null, 2));
 
   try {
     const response = await fetch(url, {
@@ -91,6 +95,12 @@ async function sendMessage(to, message) {
     });
 
     const result = await response.json();
+    
+    if (!response.ok) {
+      console.error('API Error Response:', result);
+      throw new Error(`API Error: ${result.message || 'Unknown error'}`);
+    }
+    
     console.log('Message sent successfully:', result);
     return result;
   } catch (error) {
