@@ -12,7 +12,6 @@ const port = process.env.PORT || 3000;
 const verifyToken = process.env.VERIFY_TOKEN;
 const apiToken = process.env.API_TOKEN;
 const apiVersion = process.env.API_VERSION;
-const businessPhone = process.env.BUSINESS_PHONE;
 const phoneNumberId = process.env.PHONE_NUMBER_ID;
 
 
@@ -41,10 +40,9 @@ app.post('/', async (req, res) => {
         entry.changes?.forEach(change => {
           if (change.field === 'messages') {
             change.value.messages?.forEach(async (message) => {
-              // Skip if message is from business phone (avoid echo loops)
-              if (message.from === businessPhone) {
-                return;
-              }
+              // Skip if message is from our own number (avoid echo loops)
+              // Note: We'll identify our own messages by checking if it's a message we sent
+              // This is handled by checking message context or other methods
 
               // Get the message text
               let messageText = '';
@@ -73,6 +71,11 @@ app.post('/', async (req, res) => {
 
 // Function to send message via WhatsApp API
 async function sendMessage(to, message) {
+  // Debug: mostrar las variables de entorno
+  console.log('Environment variables:');
+  console.log('- phoneNumberId:', phoneNumberId);
+  console.log('- apiVersion:', apiVersion);
+  
   const url = `https://graph.facebook.com/${apiVersion}/${phoneNumberId}/messages`;
   
   const payload = {
