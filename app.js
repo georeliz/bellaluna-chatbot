@@ -55,7 +55,10 @@ app.post('/', async (req, res) => {
               }
 
               // Send echo response
-              await sendMessage(message.from, `Echo: ${messageText}`);
+              const result = await sendMessage(message.from, `Echo: ${messageText}`);
+              if (result?.error) {
+                console.error('Failed to send echo message:', result.error);
+              }
             });
           }
         });
@@ -94,18 +97,31 @@ async function sendMessage(to, message) {
       body: JSON.stringify(payload)
     });
 
-    const result = await response.json();
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
+    
+    let result;
+    try {
+      result = await response.json();
+    } catch (jsonError) {
+      console.error('Error parsing JSON response:', jsonError);
+      const textResponse = await response.text();
+      console.error('Raw response:', textResponse);
+      throw new Error(`Invalid JSON response: ${textResponse}`);
+    }
     
     if (!response.ok) {
       console.error('API Error Response:', result);
-      throw new Error(`API Error: ${result.message || 'Unknown error'}`);
+      const errorMessage = result?.error?.message || result?.message || 'Unknown API error';
+      throw new Error(`API Error (${response.status}): ${errorMessage}`);
     }
     
     console.log('Message sent successfully:', result);
     return result;
   } catch (error) {
     console.error('Error sending message:', error);
-    throw error;
+    // No re-throw para evitar crashear la aplicación
+    return { error: error.message };
   }
 }
 
