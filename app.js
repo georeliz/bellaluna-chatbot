@@ -1,3 +1,6 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from 'express';
 import config from './src/config/env.js';
 import webhoobRoutes from './src/routes/webhookRoutes.js';
