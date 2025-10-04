@@ -3,8 +3,9 @@ import config from '../config/env.js';
 
 class WhatsappService {
     async sendMessage(to, message, messageId) {
+        console.log('Sending message to:', to, 'Message:', message);
         try {
-            await axios({
+            const response = await axios({
                 method: 'POST',
                 url: `https://graph.facebook.com/${config.apiVersion}/${config.phoneNumberId}/messages`,
                 headers: {
@@ -19,9 +20,12 @@ class WhatsappService {
                         message_id: messageId,
                     },
                 },
-            })
+            });
+            console.log('Message sent successfully:', response.data);
+            return response.data;
         } catch (error) {
-            console.error('Error sending message:', error);
+            console.error('Error sending message:', error.response?.data || error.message);
+            throw error;
         }
     }
 

@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 
 
-app.use('/', webhoobRoutes);
+app.use('/webhook', webhoobRoutes);
 
 
 // Route for GET requests
