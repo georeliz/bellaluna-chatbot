@@ -1,12 +1,12 @@
-import config from '../config/env';
-import messageHandler from '../services/messageHandler';
+import config from '../config/env.js';
+import messageHandler from '../services/messageHandler.js';
 
 class WebhookController {
     async handleIncoming(req, res) {
         const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
         const senderInfo = req.body.entry?.[0]?.changes?.[0]?.value?.contacts?.[0];
         if (message)  {
-            await messageHandler.handleIncomingMessage(message);
+            await messageHandler.handleIncomingMessage(message, senderInfo);
         }
         res.status(200);
     }
@@ -24,3 +24,5 @@ class WebhookController {
         }
     }
 }
+
+export default new WebhookController();

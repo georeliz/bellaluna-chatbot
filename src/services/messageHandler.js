@@ -1,4 +1,4 @@
-import whatsappSerice from './whatsappService.js';
+import whatsappService from './whatsappService.js';
 
 class MessageHandler {
     async handleIncomingMessage(message) {
@@ -7,14 +7,14 @@ class MessageHandler {
             const incomingMessage = message.text.body.toLowerCase().trim();
 
             if(this.isGreeting(incomingMessage)){
-                await this.sendWelcomeMessage(message.from, message.id)
+                await this.sendWelcomeMessage(message.from, message.id);
             }
                 else{
-                    const response = 'Echo: ${message.text.body}';
-                    await whatsappSerice.sendMessage(message.from, response, message.id);
+                    const response = `Echo: ${message.text.body}`;
+                    await whatsappService.sendMessage(message.from, response, message.id);
                     
                 }
-                await whatsappSerice.markAsRead(message.id);
+                await whatsappService.markAsRead(message.id);
         }
         
     }
@@ -25,7 +25,7 @@ class MessageHandler {
 
     async sendWelcomeMessage(to, message_id) {
         const welcomeMessage = 'Welcome to the Bellaluna family!' + 'how can I help you today?';
-        await whatsappSerice.sendMessage(to, welcomeMessage, message_id);
+        await whatsappService.sendMessage(to, welcomeMessage, message_id);
         
     }
 }
