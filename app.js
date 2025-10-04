@@ -1,6 +1,6 @@
 import express from 'express';
-import config from './config/env.js';
-import webhoobRoutes from './routes/webhookRoutes.js';
+import config from './src/config/env.js';
+import webhoobRoutes from './src/routes/webhookRoutes.js';
 
 
 // Create an Express app
