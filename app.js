@@ -28,8 +28,30 @@ app.get('/test', (req, res) => {
     config: {
       port: config.port,
       hasApiToken: !!config.apiToken,
-      hasPhoneNumberId: !!config.phoneNumberId
+      hasPhoneNumberId: !!config.phoneNumberId,
+      hasVerifyToken: !!config.verifyToken,
+      verifyTokenLength: config.verifyToken ? config.verifyToken.length : 0
     }
+  });
+});
+
+// Debug endpoint for webhook verification
+app.get('/debug-webhook', (req, res) => {
+  const mode = req.query['hub.mode'];
+  const token = req.query['hub.verify_token'];
+  const challenge = req.query['hub.challenge'];
+  
+  res.json({
+    received: {
+      mode,
+      token,
+      challenge
+    },
+    expected: {
+      verifyToken: config.verifyToken,
+      verifyTokenLength: config.verifyToken ? config.verifyToken.length : 0
+    },
+    match: mode === 'subscribe' && token === config.verifyToken
   });
 });
 
