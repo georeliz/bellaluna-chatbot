@@ -43,7 +43,7 @@ app.get('/test', (req, res) => {
 // Debug endpoint for webhook verification
 app.get('/debug-webhook', (req, res) => {
   const mode = req.query['hub.mode'];
-  const token = req.query['hub.verify_token'];
+  const token = req.query['hub.verifyToken'];
   const challenge = req.query['hub.challenge'];
   
   res.json({
