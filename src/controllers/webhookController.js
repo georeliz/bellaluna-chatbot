@@ -1,0 +1,26 @@
+import config from '../config/env';
+import messageHandler from '../services/messageHandler';
+
+class WebhookController {
+    async handleIncoming(req, res) {
+        const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+        const senderInfo = req.body.entry?.[0]?.changes?.[0]?.value?.contacts?.[0];
+        if (message)  {
+            await messageHandler.handleIncomingMessage(message);
+        }
+        res.status(200);
+    }
+
+    async verifyWebhook(req, res) {
+        const mode = req.query['hub.mode'];
+        const token = req.query['hub.verify_token'];
+        const challenge = req.query['hub.challenge'];
+
+        if (mode === 'subscribe' && token === config.verifyToken) {
+            res.status(200).send(challenge);
+            console.log('Webhook verified');
+        } else {
+            res.status(403);
+        }
+    }
+}

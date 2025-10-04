@@ -1,0 +1,33 @@
+import whatsappSerice from './whatsappService.js';
+
+class MessageHandler {
+    async handleIncomingMessage(message) {
+        
+        if(message.type === 'text'){
+            const incomingMessage = message.text.body.toLowerCase().trim();
+
+            if(this.isGreeting(incomingMessage)){
+                await this.sendWelcomeMessage(message.from, message.id)
+            }
+                else{
+                    const response = 'Echo: ${message.text.body}';
+                    await whatsappSerice.sendMessage(message.from, response, message.id);
+                    
+                }
+                await whatsappSerice.markAsRead(message.id);
+        }
+        
+    }
+    isGreeting(message) {
+        const greetingMessages = ['hi', 'hello', 'hey', 'hola', 'hi there', 'hello there', 'hey there', 'hola there'];
+        return greetingMessages.includes(message);
+    }
+
+    async sendWelcomeMessage(to, message_id) {
+        const welcomeMessage = 'Welcome to the Bellaluna family!' + 'how can I help you today?';
+        await whatsappSerice.sendMessage(to, welcomeMessage, message_id);
+        
+    }
+}
+
+export default new MessageHandler();
