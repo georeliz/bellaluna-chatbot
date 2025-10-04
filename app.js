@@ -10,16 +10,34 @@ const app = express();
 app.use(express.json());
 
 
-app.use('/webhook', webhoobRoutes);
+app.use('/', webhoobRoutes);
 
 
 // Route for GET requests
 app.get('/', (req, res) => {
-  res.send('<pre>Nothing to see here.\nCheckout README.md to start the project.</pre>');
-
+  res.send('<pre>Bellaluna WhatsApp Bot is running!\nWebhook URL: /webhook\nTest endpoint: /test</pre>');
 });
 
+// Test endpoint
+app.get('/test', (req, res) => {
+  console.log('Test endpoint hit!');
+  res.json({ 
+    status: 'OK', 
+    message: 'Server is running',
+    timestamp: new Date().toISOString(),
+    config: {
+      port: config.port,
+      hasApiToken: !!config.apiToken,
+      hasPhoneNumberId: !!config.phoneNumberId
+    }
+  });
+});
 
+// Test POST endpoint to simulate webhook
+app.post('/test-webhook', (req, res) => {
+  console.log('Test webhook POST received:', JSON.stringify(req.body, null, 2));
+  res.json({ status: 'Test webhook received', body: req.body });
+});
 
 // Start the server
 app.listen(config.port, () => {
