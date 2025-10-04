@@ -12,7 +12,7 @@ class MessageHandler {
 
                 if(this.isGreeting(incomingMessage)){
                     console.log('Greeting detected, sending welcome message');
-                    await this.sendWelcomeMessage(message.from, message.id);
+                    await this.sendWelcomeMessage(message.from, message.id, senderInfo);
                 } else {
                     const response = `Echo: ${message.text.body}`;
                     console.log('Sending echo response:', response);
@@ -32,8 +32,13 @@ class MessageHandler {
         return greetingMessages.includes(message);
     }
 
-    async sendWelcomeMessage(to, message_id) {
-        const welcomeMessage = 'Welcome to the Bellaluna family!' + 'how can I help you today?';
+    getSenderName(senderInfo){
+        return senderInfo.profile?.name || senderInfo.wa_id;
+    }
+
+    async sendWelcomeMessage(to, message_id, senderInfo) {
+        const name = this.getSenderName(senderInfo);
+        const welcomeMessage = 'Welcome ${name} to the Bellaluna family!' + 'how can I help you today?';
         await whatsappService.sendMessage(to, welcomeMessage, message_id);
         
     }
