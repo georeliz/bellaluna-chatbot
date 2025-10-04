@@ -38,7 +38,7 @@ class MessageHandler {
 
     async sendWelcomeMessage(to, message_id, senderInfo) {
         const name = this.getSenderName(senderInfo);
-        const welcomeMessage = 'Welcome ${name} to the Bellaluna family!' + 'how can I help you today?';
+        const welcomeMessage = `Welcome ${name} to the Bellaluna family!' + 'how can I help you today?`;
         await whatsappService.sendMessage(to, welcomeMessage, message_id);
         
     }
