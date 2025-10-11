@@ -44,16 +44,41 @@ class MessageHandler {
         
     }
 
-    async sendInteractiveList(to, sections) {
+    async sendInteractiveList(to) {
         const header = 'Choose your option';
         const body = 'Choose your option';
         const footer = 'Choose your option';
-        const button = 'Choose your option';
+        const button = 'Products';
         const sections = [
             {
                 id: '1',
                 title: 'Rings',
-                description: 'Option 1 description',
+                description: 'Rings description',
+            },
+            {
+                id: '2',
+                title: 'Earrings',
+                description: 'Earrings description',
+            },
+            {
+                id: '3',
+                title: 'Necklaces',
+                description: 'Necklaces description',
+            },
+            {
+                id: '4',
+                title: 'Bracelets',
+                description: 'Bracelets description',
+            },
+            {
+                id: '5',
+                title: 'Watches',
+                description: 'Watches description',
+            },
+            {
+                id: '6',
+                title: 'Other',
+                description: 'Other description',
             },
         ];
         await whatsappService.sendInteractiveList(to, header, body, footer, button, sections);

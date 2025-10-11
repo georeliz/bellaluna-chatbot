@@ -67,6 +67,13 @@ class WhatsappService {
     }
 
     async sendInteractiveList(to, header, body, footer, button, sections) {
+        // Check if we have valid tokens
+        if (!config.apiToken || config.apiToken === 'tu_token_de_api_aqui' || 
+            !config.phoneNumberId || config.phoneNumberId === 'tu_phone_number_id_aqui') {
+            console.log('WhatsApp API tokens not configured, skipping interactive list');
+            return { success: false, reason: 'API tokens not configured' };
+        }
+
         try {
             await axios({
                 method: 'POST',
@@ -92,32 +99,25 @@ class WhatsappService {
                         },
                         action: {
                             button: button,
-                            sections: sections,
-                        },
-                        rows: [
-                            {
-                                id: sections[0].id,
-                                title: sections[0].title,
-                            },
-                            {
-                                id: sections[1].id,
-                                title: sections[1].title,
-                            },
-                            {
-                                id: sections[2].id,
-                                title: sections[2].title,
-                            },
-                        ],
-                        description: sections[0].description,
+                            sections: [
+                                {
+                                    title: 'Products',
+                                    rows: sections.map(section => ({
+                                        id: section.id,
+                                        title: section.title,
+                                        description: section.description
+                                    }))
+                                }
+                            ]
+                        }
                     },
                 },
             });
-        } catch (error) {
-            console.error('Error sending interactive list:', error.response?.data || error.message);
-            // Don't throw error to prevent webhook failure
-        } finally {
             console.log('Interactive list sent successfully');
             return { success: true };
+        } catch (error) {
+            console.error('Error sending interactive list:', error.response?.data || error.message);
+            return { success: false, error: error.response?.data || error.message };
         }
     }
 }
