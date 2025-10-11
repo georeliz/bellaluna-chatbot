@@ -13,6 +13,7 @@ class MessageHandler {
                 if(this.isGreeting(incomingMessage)){
                     console.log('Greeting detected, sending welcome message');
                     await this.sendWelcomeMessage(message.from, message.id, senderInfo);
+                    await this.sendInteractiveList(message.from);
                 } else {
                     const response = `Echo: ${message.text.body}`;
                     console.log('Sending echo response:', response);
@@ -41,6 +42,21 @@ class MessageHandler {
         const welcomeMessage = `Welcome ${name} to the Bellaluna family!' + 'how can I help you today?`;
         await whatsappService.sendMessage(to, welcomeMessage, message_id);
         
+    }
+
+    async sendInteractiveList(to, sections) {
+        const header = 'Choose your option';
+        const body = 'Choose your option';
+        const footer = 'Choose your option';
+        const button = 'Choose your option';
+        const sections = [
+            {
+                id: '1',
+                title: 'Rings',
+                description: 'Option 1 description',
+            },
+        ];
+        await whatsappService.sendInteractiveList(to, header, body, footer, button, sections);
     }
 }
 

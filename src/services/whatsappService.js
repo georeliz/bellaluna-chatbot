@@ -65,6 +65,61 @@ class WhatsappService {
             // Don't throw error to prevent webhook failure
         }
     }
+
+    async sendInteractiveList(to, header, body, footer, button, sections) {
+        try {
+            await axios({
+                method: 'POST',
+                url: `https://graph.facebook.com/${config.apiVersion}/${config.phoneNumberId}/messages`,
+                headers: {
+                    Authorization: `Bearer ${config.apiToken}`,
+                },
+                data: {
+                    messaging_product: 'whatsapp',
+                    to,
+                    type: 'interactive',
+                    interactive: {
+                        type: 'list',
+                        header: {
+                            type: 'text',
+                            text: header,
+                        },
+                        body: {
+                            text: body,
+                        },
+                        footer: {
+                            text: footer,
+                        },
+                        action: {
+                            button: button,
+                            sections: sections,
+                        },
+                        rows: [
+                            {
+                                id: sections[0].id,
+                                title: sections[0].title,
+                            },
+                            {
+                                id: sections[1].id,
+                                title: sections[1].title,
+                            },
+                            {
+                                id: sections[2].id,
+                                title: sections[2].title,
+                            },
+                        ],
+                        description: sections[0].description,
+                    },
+                },
+            });
+        } catch (error) {
+            console.error('Error sending interactive list:', error.response?.data || error.message);
+            // Don't throw error to prevent webhook failure
+        } finally {
+            console.log('Interactive list sent successfully');
+            return { success: true };
+        }
+    }
 }
 
 export default new WhatsappService();
