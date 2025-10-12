@@ -14,9 +14,12 @@ class MessageHandler {
                     console.log('Greeting detected, sending welcome message');
                     await this.sendWelcomeMessage(message.from, message.id, senderInfo);
                     await this.sendInteractiveList(message.from);
+                } else if(this.isMenuSelection(incomingMessage)){
+                    console.log('Menu selection detected');
+                    await this.handleMenuSelection(message.from, message.id, incomingMessage);
                 } else {
-                    const response = `Echo: ${message.text.body}`;
-                    console.log('Sending echo response:', response);
+                    const response = `Gracias por tu mensaje. Para acceder al menú principal, escribe "hola" o "menu" 😊`;
+                    console.log('Sending default response:', response);
                     await whatsappService.sendMessage(message.from, response, message.id);
                 }
                 await whatsappService.markAsRead(message.id);
@@ -29,8 +32,13 @@ class MessageHandler {
         }
     }
     isGreeting(message) {
-        const greetingMessages = ['hi', 'hello', 'hey', 'hola', 'hi there', 'hello there', 'hey there', 'hola there'];
+        const greetingMessages = ['hi', 'hello', 'hey', 'hola', 'hi there', 'hello there', 'hey there', 'hola there', 'menu', 'menú'];
         return greetingMessages.includes(message);
+    }
+
+    isMenuSelection(message) {
+        const menuSelections = ['1', '2', '3', '4', '5', '6', 'habitaciones', 'eventos', 'restaurante', 'ubicación', 'contacto', 'información'];
+        return menuSelections.includes(message);
     }
 
     getSenderName(senderInfo){
@@ -39,49 +47,140 @@ class MessageHandler {
 
     async sendWelcomeMessage(to, message_id, senderInfo) {
         const name = this.getSenderName(senderInfo);
-        const welcomeMessage = `Welcome ${name} to the Bellaluna family!' + 'how can I help you today?`;
+        const welcomeMessage = `¡Hola ${name}! 🏨\n\nBienvenido al Hotel Bella Luna en Quetzaltenango.\n\n"El descanso que mereces" 💫\n\n¿En qué puedo ayudarte hoy?`;
         await whatsappService.sendMessage(to, welcomeMessage, message_id);
         
     }
 
     async sendInteractiveList(to) {
-        const header = 'Choose your option';
-        const body = 'Choose your option';
-        const footer = 'Choose your option';
-        const button = 'Products';
+        const header = '🏨 Hotel Bella Luna';
+        const body = 'Selecciona el servicio que te interesa:';
+        const footer = 'Tu descanso nos importa 💫';
+        const button = 'Ver Opciones';
         const sections = [
             {
                 id: '1',
-                title: 'Rings',
-                description: 'Rings description',
+                title: '🏠 Habitaciones',
+                description: 'Habitaciones cómodas y seguras',
             },
             {
                 id: '2',
-                title: 'Earrings',
-                description: 'Earrings description',
+                title: '🎉 Eventos',
+                description: 'Salones para eventos sociales y corporativos',
             },
             {
                 id: '3',
-                title: 'Necklaces',
-                description: 'Necklaces description',
+                title: '🍽️ Restaurante',
+                description: 'Deliciosos platillos del Jardín',
             },
             {
                 id: '4',
-                title: 'Bracelets',
-                description: 'Bracelets description',
+                title: '📍 Ubicación',
+                description: 'Km 196.5 Carretera Interamericana',
             },
             {
                 id: '5',
-                title: 'Watches',
-                description: 'Watches description',
+                title: '📞 Contacto',
+                description: 'Información y reservaciones',
             },
             {
                 id: '6',
-                title: 'Other',
-                description: 'Other description',
+                title: 'ℹ️ Información',
+                description: 'Sobre nuestro hotel',
             },
         ];
         await whatsappService.sendInteractiveList(to, header, body, footer, button, sections);
+    }
+
+    async handleMenuSelection(to, messageId, selection) {
+        let response = '';
+        
+        switch(selection) {
+            case '1':
+            case 'habitaciones':
+                response = `🏠 *HABITACIONES DISPONIBLES*\n\n` +
+                          `• Habitación Sencilla\n` +
+                          `• Habitación Doble\n` +
+                          `• Habitación Triple\n` +
+                          `• Habitación Cuádruple\n` +
+                          `• Suite Presidencial\n\n` +
+                          `Todas nuestras habitaciones cuentan con:\n` +
+                          `✅ Amplias y cómodas\n` +
+                          `✅ Protocolo de higiene estricto\n` +
+                          `✅ Máxima seguridad\n\n` +
+                          `¿Te gustaría hacer una reservación? Escribe "reservar" 📞`;
+                break;
+                
+            case '2':
+            case 'eventos':
+                response = `🎉 *EVENTOS Y SALONES*\n\n` +
+                          `Celebra con nosotros tu evento:\n\n` +
+                          `• Eventos Sociales\n` +
+                          `• Eventos Corporativos\n` +
+                          `• Salones amplios y equipados\n\n` +
+                          `📞 *Cotizaciones de Eventos:*\n` +
+                          `+502 5710 0027\n\n` +
+                          `¿Necesitas más información sobre eventos?`;
+                break;
+                
+            case '3':
+            case 'restaurante':
+                response = `🍽️ *RESTAURANTE EL JARDÍN*\n\n` +
+                          `Disfruta de nuestros deliciosos platillos:\n\n` +
+                          `• Cocina internacional\n` +
+                          `• Ambiente acogedor\n` +
+                          `• Servicio de primera\n\n` +
+                          `¿Te gustaría ver nuestro menú? Escribe "menú" 📋`;
+                break;
+                
+            case '4':
+            case 'ubicación':
+                response = `📍 *UBICACIÓN*\n\n` +
+                          `🏨 *Hotel Bella Luna*\n` +
+                          `Km 196.5 Carretera Interamericana\n` +
+                          `Quetzaltenango, Guatemala\n\n` +
+                          `*Ventajas de nuestra ubicación:*\n` +
+                          `✅ A solo 10 minutos del centro\n` +
+                          `✅ Cerca de centros comerciales\n` +
+                          `✅ Acceso a rutas turísticas\n` +
+                          `✅ Ambiente tranquilo y seguro\n\n` +
+                          `¿Necesitas indicaciones? 🗺️`;
+                break;
+                
+            case '5':
+            case 'contacto':
+                response = `📞 *INFORMACIÓN DE CONTACTO*\n\n` +
+                          `*Hotel:*\n` +
+                          `📞 +502 7926 8123\n` +
+                          `📞 +502 7926 8125\n` +
+                          `📞 +502 7926 8129\n\n` +
+                          `*Eventos:*\n` +
+                          `📞 +502 5710 0027\n\n` +
+                          `*Email:*\n` +
+                          `📧 info@hotelbellaluna.com\n\n` +
+                          `*Horario de Atención:*\n` +
+                          `24 horas / 7 días a la semana\n\n` +
+                          `¿En qué podemos ayudarte? 😊`;
+                break;
+                
+            case '6':
+            case 'información':
+                response = `ℹ️ *SOBRE HOTEL BELLA LUNA*\n\n` +
+                          `*MISIÓN:*\n` +
+                          `Generar experiencias únicas y satisfactorias para nuestros huéspedes superando sus expectativas, en un ambiente agradable y familiar.\n\n` +
+                          `*VISIÓN:*\n` +
+                          `Ser líderes reconocidos en Quetzaltenango en la industria hotelera, como un hotel icónico de la ciudad.\n\n` +
+                          `*EXPERIENCIA:*\n` +
+                          `Más de 25 años de experiencia brindando el mejor servicio.\n\n` +
+                          `*LEMA:*\n` +
+                          `"El descanso que mereces" 💫`;
+                break;
+                
+            default:
+                response = `No entendí tu selección. Por favor, escribe el número (1-6) o "hola" para ver el menú nuevamente. 😊`;
+        }
+        
+        await whatsappService.sendMessage(to, response, messageId);
     }
 }
 
