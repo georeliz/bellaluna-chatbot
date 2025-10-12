@@ -66,7 +66,7 @@ class MessageHandler {
             {
                 id: '2',
                 title: '📅 Consultar tarifas y disponibilidad',
-                description: 'Ver calendario de disponibilidad y tarifas vigentes',
+                description: 'Ver calendario y tarifas vigentes',
             },
 
             {
