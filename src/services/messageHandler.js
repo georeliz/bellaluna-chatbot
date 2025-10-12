@@ -60,14 +60,15 @@ class MessageHandler {
         const sections = [
             {
                 id: '1',
-                title: '🏠 Habitaciones',
+                title: '🛏️ Habitaciones',
                 description: 'Habitaciones cómodas y seguras',
             },
             {
                 id: '2',
-                title: '🎉 Eventos',
-                description: 'Salones para eventos sociales y corporativos',
+                title: '📅 Consultar tarifas y disponibilidad',
+                description: 'Ver calendario de disponibilidad y tarifas vigentes',
             },
+
             {
                 id: '3',
                 title: '🍽️ Restaurante',
@@ -75,18 +76,18 @@ class MessageHandler {
             },
             {
                 id: '4',
-                title: '📍 Ubicación',
+                title: '📍 Ubicación y como llegar',
                 description: 'Km 196.5 Carretera Interamericana',
             },
             {
                 id: '5',
-                title: '📞 Contacto',
-                description: 'Información y reservaciones',
+                title: '🎉 Eventos',
+                description: 'Salones para eventos sociales y corporativos',
             },
             {
                 id: '6',
-                title: 'ℹ️ Información',
-                description: 'Sobre nuestro hotel',
+                title: '💬 Hablar con un asesor',
+                description: 'Atención personalizada con nuestro equipo',
             },
         ];
         await whatsappService.sendInteractiveList(to, header, body, footer, button, sections);
