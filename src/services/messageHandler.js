@@ -113,15 +113,20 @@ class MessageHandler {
                 break;
                 
             case '2':
-            case 'eventos':
-                response = `🎉 *EVENTOS Y SALONES*\n\n` +
-                          `Celebra con nosotros tu evento:\n\n` +
-                          `• Eventos Sociales\n` +
-                          `• Eventos Corporativos\n` +
-                          `• Salones amplios y equipados\n\n` +
-                          `📞 *Cotizaciones de Eventos:*\n` +
-                          `+502 5710 0027\n\n` +
-                          `¿Necesitas más información sobre eventos?`;
+            case 'tarifas':
+            case 'disponibilidad':
+                response = `📅 *TARIFAS Y DISPONIBILIDAD*\n\n` +
+                          `Consulta nuestras tarifas por temporada:\n\n` +
+                          `• Temporada Baja: Q250 - Q350\n` +
+                          `• Temporada Media: Q350 - Q450\n` +
+                          `• Temporada Alta: Q450 - Q650\n\n` +
+                          `*Disponibilidad:*\n` +
+                          `✅ Consulta en tiempo real\n` +
+                          `✅ Reservas online\n` +
+                          `✅ Cancelación flexible\n\n` +
+                          `📞 *Reservas:*\n` +
+                          `+502 7926 8123\n\n` +
+                          `¿Te gustaría hacer una reservación?`;
                 break;
                 
             case '3':
@@ -149,8 +154,22 @@ class MessageHandler {
                 break;
                 
             case '5':
+            case 'eventos':
+                response = `🎉 *EVENTOS Y SALONES*\n\n` +
+                          `Celebra con nosotros tu evento:\n\n` +
+                          `• Eventos Sociales\n` +
+                          `• Eventos Corporativos\n` +
+                          `• Salones amplios y equipados\n\n` +
+                          `📞 *Cotizaciones de Eventos:*\n` +
+                          `+502 5710 0027\n\n` +
+                          `¿Necesitas más información sobre eventos?`;
+                break;
+                
+            case '6':
+            case 'asesor':
             case 'contacto':
-                response = `📞 *INFORMACIÓN DE CONTACTO*\n\n` +
+                response = `💬 *HABLAR CON UN ASESOR*\n\n` +
+                          `Conecta con nuestros especialistas para atención personalizada:\n\n` +
                           `*Hotel:*\n` +
                           `📞 +502 7926 8123\n` +
                           `📞 +502 7926 8125\n` +
@@ -162,19 +181,6 @@ class MessageHandler {
                           `*Horario de Atención:*\n` +
                           `24 horas / 7 días a la semana\n\n` +
                           `¿En qué podemos ayudarte? 😊`;
-                break;
-                
-            case '6':
-            case 'información':
-                response = `ℹ️ *SOBRE HOTEL BELLA LUNA*\n\n` +
-                          `*MISIÓN:*\n` +
-                          `Generar experiencias únicas y satisfactorias para nuestros huéspedes superando sus expectativas, en un ambiente agradable y familiar.\n\n` +
-                          `*VISIÓN:*\n` +
-                          `Ser líderes reconocidos en Quetzaltenango en la industria hotelera, como un hotel icónico de la ciudad.\n\n` +
-                          `*EXPERIENCIA:*\n` +
-                          `Más de 25 años de experiencia brindando el mejor servicio.\n\n` +
-                          `*LEMA:*\n` +
-                          `"El descanso que mereces" 💫`;
                 break;
                 
             default:
