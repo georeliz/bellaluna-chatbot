@@ -65,7 +65,7 @@ class MessageHandler {
             },
             {
                 id: '2',
-                title: '📅 Consultar tarifas y disponibilidad',
+                title: '📅 Tarifas y disponibilidad',
                 description: 'Ver calendario y tarifas vigentes',
             },
 
@@ -76,7 +76,7 @@ class MessageHandler {
             },
             {
                 id: '4',
-                title: '📍 Ubicación y como llegar',
+                title: '📍 Ubicación',
                 description: 'Km 196.5 Carretera Interamericana',
             },
             {
@@ -86,7 +86,7 @@ class MessageHandler {
             },
             {
                 id: '6',
-                title: '💬 Hablar con un asesor',
+                title: '💬 Hablar con asesor',
                 description: 'Atención personalizada con nuestro equipo',
             },
         ];
