@@ -65,7 +65,7 @@ class MessageHandler {
             },
             {
                 id: '2',
-                title: '📅 Tarifas y disponibilidad',
+                title: '📅 Tarifas',
                 description: 'Ver calendario y tarifas vigentes',
             },
 
@@ -82,12 +82,12 @@ class MessageHandler {
             {
                 id: '5',
                 title: '🎉 Eventos',
-                description: 'Salones para eventos sociales y corporativos',
+                description: 'Salones para eventos sociales',
             },
             {
                 id: '6',
                 title: '💬 Hablar con asesor',
-                description: 'Atención personalizada con nuestro equipo',
+                description: 'Atención personalizada',
             },
         ];
         await whatsappService.sendInteractiveList(to, header, body, footer, button, sections);
