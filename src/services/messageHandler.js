@@ -153,9 +153,21 @@ class MessageHandler {
                 
             case '4':
             case 'ubicación':
-                response = `📍 *UBICACIÓN*\n\n`;
+                response = `📍 *UBICACIÓN*\n\n` +
+                          `🏨 *Hotel Bella Luna*\n` +
+                          `Km 196.5 Carretera Interamericana\n` +
+                          `Quetzaltenango, Guatemala\n\n` +
+                          `*Ventajas de nuestra ubicación:*\n` +
+                          `✅ A solo 10 minutos del centro\n` +
+                          `✅ Cerca de centros comerciales\n` +
+                          `✅ Acceso a rutas turísticas\n` +
+                          `✅ Ambiente tranquilo y seguro\n\n` +
+                          `Aquí está nuestra ubicación en el mapa: 🗺️`;
+                // Enviar el mensaje de texto primero
+                await whatsappService.sendMessage(to, response, messageId);
+                // Luego enviar la ubicación
                 await this.sendLocation(to, messageId);
-                break;
+                return; // Salir temprano, ya se envió el mensaje y la ubicación
                 
             case '5':
             case 'eventos':
@@ -165,25 +177,13 @@ class MessageHandler {
                           `• Eventos Corporativos\n` +
                           `• Salones amplios y equipados\n\n` +
                           `📞 *Cotizaciones de Eventos:*\n` +
-                          `+502 5710 0027\n\n` +
-                          `¿Necesitas más información sobre eventos?`;
+                          `+502 5710 0027`;
                 break;
                 
             case '6':
             case 'asesor':
             case 'contacto':
                 response = `💬 *HABLAR CON UN ASESOR*\n\n` +
-                          `Conecta con nuestros especialistas para atención personalizada:\n\n` +
-                          `*Hotel:*\n` +
-                          `📞 +502 7926 8123\n` +
-                          `📞 +502 7926 8125\n` +
-                          `📞 +502 7926 8129\n\n` +
-                          `*Eventos:*\n` +
-                          `📞 +502 5710 0027\n\n` +
-                          `*Email:*\n` +
-                          `📧 info@hotelbellaluna.com\n\n` +
-                          `*Horario de Atención:*\n` +
-                          `24 horas / 7 días a la semana\n\n` +
                           `¿En qué podemos ayudarte? 😊`;
                 break;
                 
