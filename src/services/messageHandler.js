@@ -25,7 +25,7 @@ class MessageHandler {
                 await whatsappService.markAsRead(message.id);
             } else if (message?.type === 'interactive') {
                 const type = message?.interactive?.button?.id;
-                await this.handleMenuSelection(message.from, type);
+                await this.handleMenuSelection(message.from, message.id, type);
                 await whatsappService.markAsRead(message.id);
             } 
         } catch (error) {
@@ -95,7 +95,7 @@ class MessageHandler {
         await whatsappService.sendInteractiveList(to, header, body, footer, button, sections);
     }
 
-    async handleMenuSelection(to, type) {
+    async handleMenuSelection(to, messageId, type) {
         let response = '';
         
         switch(type) {
