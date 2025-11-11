@@ -153,16 +153,8 @@ class MessageHandler {
                 
             case '4':
             case 'ubicación':
-                response = `📍 *UBICACIÓN*\n\n` +
-                          `🏨 *Hotel Bella Luna*\n` +
-                          `Km 196.5 Carretera Interamericana\n` +
-                          `Quetzaltenango, Guatemala\n\n` +
-                          `*Ventajas de nuestra ubicación:*\n` +
-                          `✅ A solo 10 minutos del centro\n` +
-                          `✅ Cerca de centros comerciales\n` +
-                          `✅ Acceso a rutas turísticas\n` +
-                          `✅ Ambiente tranquilo y seguro\n\n` +
-                          `¿Necesitas indicaciones? 🗺️`;
+                response = `📍 *UBICACIÓN*\n\n`;
+                await this.sendLocation(to, messageId);
                 break;
                 
             case '5':
@@ -202,6 +194,16 @@ class MessageHandler {
         
         console.log('Sending response for type:', normalizedType);
         await whatsappService.sendMessage(to, response, messageId);
+    }
+
+    async sendLocation(to, messageId) {
+        const latitude = 14.847943325209224;
+        const longitude = -91.48132362788549;
+        const name = "Hotel Bella Luna";
+        const address = "Km 196.5 Carretera Interamericana";
+
+        await whatsappService.sendLocationMessage(to, messageId, latitude, longitude, name, address);
+       
     }
 }
 

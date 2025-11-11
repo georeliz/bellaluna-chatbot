@@ -120,6 +120,32 @@ class WhatsappService {
             return { success: false, error: error.response?.data || error.message };
         }
     }
+
+    async sendLocationMessage(to, messageId, latitude, longitude, name, address) {
+        try {
+            await axios({
+                method: 'POST',
+                url: `https://graph.facebook.com/${config.apiVersion}/${config.phoneNumberId}/messages`,
+                headers: {
+                    Authorization: `Bearer ${config.apiToken}`,
+                },
+                data: {
+                    messaging_product: 'whatsapp',
+                    to,
+                    type: 'location',
+                    location: {
+                        latitude,
+                        longitude,
+                        name,
+                        address,
+                    },
+                },
+            });
+        } catch (error) {
+            console.error('Error sending location message:', error.response?.data || error.message);
+            
+        }
+    }
 }
 
 export default new WhatsappService();
