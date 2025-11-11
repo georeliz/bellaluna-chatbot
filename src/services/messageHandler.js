@@ -24,8 +24,14 @@ class MessageHandler {
                 }
                 await whatsappService.markAsRead(message.id);
             } else if (message?.type === 'interactive') {
-                const type = message?.interactive?.button?.id;
-                await this.handleMenuSelection(message.from, message.id, type);
+                // Para listas interactivas, el ID está en list_reply.id
+                const type = message?.interactive?.list_reply?.id;
+                console.log('Interactive message type:', type);
+                if (type) {
+                    await this.handleMenuSelection(message.from, message.id, type);
+                } else {
+                    console.log('No ID found in interactive message:', JSON.stringify(message.interactive, null, 2));
+                }
                 await whatsappService.markAsRead(message.id);
             } 
         } catch (error) {
@@ -96,9 +102,13 @@ class MessageHandler {
     }
 
     async handleMenuSelection(to, messageId, type) {
+        console.log('handleMenuSelection called with type:', type, 'typeof:', typeof type);
+        // Asegurar que type sea string y eliminar espacios
+        const normalizedType = String(type).trim();
+        console.log('Normalized type:', normalizedType);
         let response = '';
         
-        switch(type) {
+        switch(normalizedType) {
             case '1':
             case 'habitaciones':
                 response = `🏠 *HABITACIONES DISPONIBLES*\n\n` +
@@ -186,9 +196,11 @@ class MessageHandler {
                 break;
                 
             default:
+                console.log('No matching case found for type:', normalizedType);
                 response = `No entendí tu selección. Por favor, escribe el número (1-6) o "hola" para ver el menú nuevamente. 😊`;
         }
         
+        console.log('Sending response for type:', normalizedType);
         await whatsappService.sendMessage(to, response, messageId);
     }
 }
