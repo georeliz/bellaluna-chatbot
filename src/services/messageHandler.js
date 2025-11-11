@@ -23,9 +23,11 @@ class MessageHandler {
                     await whatsappService.sendMessage(message.from, response, message.id);
                 }
                 await whatsappService.markAsRead(message.id);
-            } else {
-                console.log('Non-text message received, type:', message.type);
-            }
+            } else if (message?.type === 'interactive') {
+                const type = message?.interactive?.button?.id;
+                await this.handleMenuSelection(message.from, type);
+                await whatsappService.markAsRead(message.id);
+            } 
         } catch (error) {
             console.error('Error processing message:', error);
             // No re-throw the error to prevent webhook failure
@@ -93,10 +95,10 @@ class MessageHandler {
         await whatsappService.sendInteractiveList(to, header, body, footer, button, sections);
     }
 
-    async handleMenuSelection(to, messageId, selection) {
+    async handleMenuSelection(to, type) {
         let response = '';
         
-        switch(selection) {
+        switch(type) {
             case '1':
             case 'habitaciones':
                 response = `🏠 *HABITACIONES DISPONIBLES*\n\n` +
