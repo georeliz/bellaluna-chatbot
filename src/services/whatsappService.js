@@ -24,9 +24,9 @@ class WhatsappService {
                     to,
                     type: 'text',
                     text: { body: message },
-                    context: {
-                        message_id: messageId,
-                    },
+                    //context: {
+                    //    message_id: messageId,
+                    //},
                 },
             });
             console.log('Message sent successfully:', response.data);
@@ -121,7 +121,7 @@ class WhatsappService {
         }
     }
 
-    async sendLocationMessage(to, messageId, latitude, longitude, name, address) {
+    async sendLocationMessage(to, latitude, longitude, name, address) {
         // Check if we have valid tokens
         if (!config.apiToken || config.apiToken === 'tu_token_de_api_aqui' || 
             !config.phoneNumberId || config.phoneNumberId === 'tu_phone_number_id_aqui') {
@@ -156,47 +156,7 @@ class WhatsappService {
         }
     }
 
-    async notifyAgent(customerPhone, customerName, customerInfo) {
-        // Check if we have valid tokens and agent number
-        if (!config.apiToken || config.apiToken === 'tu_token_de_api_aqui' || 
-            !config.phoneNumberId || config.phoneNumberId === 'tu_phone_number_id_aqui') {
-            console.log('WhatsApp API tokens not configured, skipping agent notification');
-            return { success: false, reason: 'API tokens not configured' };
-        }
-
-        if (!config.agentPhoneNumber) {
-            console.log('Agent phone number not configured, skipping agent notification');
-            return { success: false, reason: 'Agent phone number not configured' };
-        }
-
-        try {
-            const notificationMessage = `🔔 *NUEVA SOLICITUD DE ATENCIÓN*\n\n` +
-                `Un cliente solicita hablar con un asesor:\n\n` +
-                `*Cliente:*\n` +
-                `📱 ${customerPhone}\n` +
-                `👤 ${customerName}\n\n` +
-                `Por favor, ponte en contacto con el cliente lo antes posible.`;
-
-            const response = await axios({
-                method: 'POST',
-                url: `https://graph.facebook.com/${config.apiVersion}/${config.phoneNumberId}/messages`,
-                headers: {
-                    Authorization: `Bearer ${config.apiToken}`,
-                },
-                data: {
-                    messaging_product: 'whatsapp',
-                    to: config.agentPhoneNumber,
-                    type: 'text',
-                    text: { body: notificationMessage },
-                },
-            });
-            console.log('Agent notification sent successfully:', response.data);
-            return response.data;
-        } catch (error) {
-            console.error('Error notifying agent:', error.response?.data || error.message);
-            return { success: false, error: error.response?.data || error.message };
-        }
-    }
+ 
 }
 
 export default new WhatsappService();

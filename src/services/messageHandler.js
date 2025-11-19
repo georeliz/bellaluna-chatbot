@@ -110,7 +110,6 @@ class MessageHandler {
         
         switch(normalizedType) {
             case '1':
-            case 'habitaciones':
                 response = `🏠 *HABITACIONES DISPONIBLES*\n\n` +
                           `• Habitación Sencilla\n` +
                           `• Habitación Doble\n` +
@@ -125,8 +124,6 @@ class MessageHandler {
                 break;
                 
             case '2':
-            case 'tarifas':
-            case 'disponibilidad':
                 response = `📅 *TARIFAS Y DISPONIBILIDAD*\n\n` +
                           `Consulta nuestras tarifas por temporada:\n\n` +
                           `• Temporada Baja: Q250 - Q350\n` +
@@ -142,7 +139,6 @@ class MessageHandler {
                 break;
                 
             case '3':
-            case 'restaurante':
                 response = `🍽️ *RESTAURANTE EL JARDÍN*\n\n` +
                           `Disfruta de nuestros deliciosos platillos:\n\n` +
                           `• Cocina internacional\n` +
@@ -152,7 +148,6 @@ class MessageHandler {
                 break;
                 
             case '4':
-            case 'ubicación':
                 response = `📍 *UBICACIÓN*\n\n` +
                           `🏨 *Hotel Bella Luna*\n` +
                           `Km 196.5 Carretera Interamericana\n` +
@@ -164,13 +159,12 @@ class MessageHandler {
                           `✅ Ambiente tranquilo y seguro\n\n` +
                           `Aquí está nuestra ubicación en el mapa: 🗺️`;
                 // Enviar el mensaje de texto primero
-                await whatsappService.sendMessage(to, response, messageId);
+                //await whatsappService.sendMessage(to, response, messageId);
                 // Luego enviar la ubicación
-                await this.sendLocation(to, messageId);
+                await this.sendLocation(to);
                 return; // Salir temprano, ya se envió el mensaje y la ubicación
                 
             case '5':
-            case 'eventos':
                 response = `🎉 *EVENTOS Y SALONES*\n\n` +
                           `Celebra con nosotros tu evento:\n\n` +
                           `• Eventos Sociales\n` +
@@ -181,8 +175,6 @@ class MessageHandler {
                 break;
                 
             case '6':
-            case 'asesor':
-            case 'contacto':
                 response = `💬 *HABLAR CON UN ASESOR*\n\n` +
                           `¿En qué podemos ayudarte? 😊`;
                 break;
@@ -196,13 +188,13 @@ class MessageHandler {
         await whatsappService.sendMessage(to, response, messageId);
     }
 
-    async sendLocation(to, messageId) {
+    async sendLocation(to) {
         const latitude = 14.847943325209224;
         const longitude = -91.48132362788549;
         const name = "Hotel Bella Luna";
         const address = "Km 196.5 Carretera Interamericana";
 
-        await whatsappService.sendLocationMessage(to, messageId, latitude, longitude, name, address);
+        await whatsappService.sendLocationMessage(to, latitude, longitude, name, address);
        
     }
 }
